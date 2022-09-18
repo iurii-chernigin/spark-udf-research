@@ -1,11 +1,13 @@
-import pandas as pd
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import pandas_udf
 from pyspark.sql.types import StringType
+import pandas as pd
 
-#TODO аннотация
+@pandas_udf(StringType())
 def card_number_mask(s: pd.Series) -> pd.Series:
-    return #TODO Ваша реализация
+    for x in range(4, 12):
+        s = s.str.slice_replace(start=x, stop=x+1, repl='X')
+    return s
 
 
 if __name__ == "__main__":
